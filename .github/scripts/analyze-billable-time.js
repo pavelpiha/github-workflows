@@ -12,7 +12,8 @@ async function searchWorkflowsInRepositories() {
     // const response = await octokit.search.repos({
     const response = await octokit.search.code({
       // q: `owner:${USER} .github/workflows`,
-      q: `"${USER}" path:.github/workflows`,
+      // q: `"${USER}" path:.github/workflows`,
+      q: `path:.github/workflows`,
       // q: `owner%3Apavelpiha+.github%2Fworkflows`,
       // q: queryString,
     });
