@@ -15,7 +15,8 @@ async function searchWorkflowsInRepositories() {
       // q: `"${USER}" path:.github/workflows`,
       // q: `path:.github/workflows`,
       // q: `owner%3Apavelpiha+.github%2Fworkflows`,
-      q: `user:pavelpiha+path:.github/workflows`,
+      // q: `user:pavelpiha+path:.github/workflows`,
+      q: `user:pavelpiha path:.github/workflows`,
       // q: queryString,
     });
 
