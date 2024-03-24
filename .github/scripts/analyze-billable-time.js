@@ -9,7 +9,7 @@ async function searchWorkflowsInRepositories() {
     const queryString = encodeURIComponent(
       "user:" + USER + ".github/workflows"
     );
-    const response = await octokit.search.repositories({
+    const response = await octokit.search.repos({
       // q: `owner:${USER} .github/workflows`,
       // q: `owner%3Apavelpiha+.github%2Fworkflows`,
       q: queryString,
