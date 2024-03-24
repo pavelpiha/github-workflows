@@ -4,37 +4,40 @@ const USER = process.env.USER;
 const TOKEN = process.env.GIT_PAT;
 const octokit = new Octokit({ auth: TOKEN });
 
-async function fetchPrivateRepos() {
-  await octokit
-    .request(`GET /users/{username}/repos`, {
-      username: USER,
-      type: "public",
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    })
-    .then((response) => {
-      console.log("Repos:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error fetching repos:", error.message);
+async function searchWorkflowsInRepositories() {
+  try {
+    const response = await octokit.search.code({
+      q: `user:${USER} filename:.github/workflows`,
     });
+
+    const repositoriesWithWorkflows = [];
+    response.data.items.forEach((item) => {
+      const repositoryName = item.repository.name;
+      repositoriesWithWorkflows.push(repositoryName);
+    });
+
+    return repositoriesWithWorkflows;
+  } catch (error) {
+    console.error("Error searching workflows:", error);
+    return [];
+  }
 }
 
-// async function searchPrivateRepos() {
-//   await octokit
-//     .request("GET /search/repositories", {
-//       headers: {
-//         "X-GitHub-Api-Version": "2022-11-28",
-//       },
-//     })
-//     .then((response) => {
-//       console.log("Repos:", response.data);
-//     })
-//     .catch((error) => {
-//       console.error("@@@@@@@@@@@@@@@ Error search repos:", error.message);
-//     });
-// }
+async function main() {
+  try {
+    const repositories = await searchWorkflowsInRepositories();
+    console.log("Repositories with Workflows:");
+    console.log("------------------------------------------");
+    repositories.forEach((repo) => {
+      console.log(repo);
+    });
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// Run the main function
+main();
 
 async function fetchRepos(page = 1, listOfRepositories = []) {
   const { data } = await octokit.rest.repos
@@ -78,5 +81,4 @@ async function getBillableTime() {
   console.table(reposWithActions);
   console.log("Total Billable time: ", billableTime);
 }
-fetchPrivateRepos();
-getBillableTime().catch((err) => console.log("11111111111111111111111", err));
+// getBillableTime().catch((err) => console.log("11111111111111111111111", err));
