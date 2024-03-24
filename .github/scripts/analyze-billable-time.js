@@ -15,6 +15,7 @@ async function searchWorkflowsInRepositories() {
       const repositoryName = item.repository.name;
       repositoriesWithWorkflows.push(repositoryName);
     });
+    console.log("response.data", response.data);
 
     return repositoriesWithWorkflows;
   } catch (error) {
