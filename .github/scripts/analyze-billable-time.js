@@ -7,7 +7,8 @@ const octokit = new Octokit({ auth: TOKEN });
 async function searchWorkflowsInRepositories() {
   try {
     const response = await octokit.search.code({
-      q: `owner:${USER} .github/workflows`,
+      // q: `owner:${USER} .github/workflows`,
+      q: `owner%3Apavelpiha+.github%2Fworkflows`,
     });
 
     const repositoriesWithWorkflows = [];
