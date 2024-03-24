@@ -1,0 +1,27 @@
+name: Analyze Actions Billable Time
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "feature/workflows"
+      - "main"
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      USER: "pavelpiha"
+      GIT_PAT: ${{secrets.GIT_PAT}}
+      # GIT_PAT: ${{secrets.GIT_PAT_FINE_GRAINED}}  //this works!!!
+      # GIT_PAT: ${{secrets.GITHUB_TOKEN}}  //this does not work!!!
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: npm install @octokit/rest @octokit/core
+      - name: Run Script
+        run: node ./.github/scripts/analyze-billable-time.js
