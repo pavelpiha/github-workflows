@@ -36,7 +36,7 @@ async function fetchPrivateRepos() {
 //     });
 // }
 
-async function fetchRepos(page = 1, repoArr = []) {
+async function fetchRepos(page = 1, listOfRepositories = []) {
   const { data } = await octokit.rest.repos
     .listForAuthenticatedUser({
       visibility: "public",
@@ -47,7 +47,7 @@ async function fetchRepos(page = 1, repoArr = []) {
       console.error("$$$$$$$$$$$$$$$:", error.message);
     });
 
-  repoArr.push(
+  listOfRepositories.push(
     ...data.map((repo) => ({
       name: repo.name,
       url: repo.html_url,
@@ -57,7 +57,8 @@ async function fetchRepos(page = 1, repoArr = []) {
   if (data.length === 100) {
     return await fetchRepos(page + 1, repoArr);
   }
-  return repoArr;
+  console.log("!!!!!!listOfRepositories", listOfRepositories);
+  return listOfRepositories;
 }
 
 async function getBillableTime() {
