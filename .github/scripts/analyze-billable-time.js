@@ -7,7 +7,7 @@ const octokit = new Octokit({ auth: TOKEN });
 async function searchWorkflowsInRepositories() {
   try {
     const response = await octokit.search.code({
-      q: `user:${USER} filename:.github/workflows`,
+      q: `user:${USER} .github/workflows`,
     });
 
     const repositoriesWithWorkflows = [];
@@ -35,9 +35,6 @@ async function main() {
     console.error("Error:", error);
   }
 }
-
-// Run the main function
-main();
 
 async function fetchRepos(page = 1, listOfRepositories = []) {
   const { data } = await octokit.rest.repos
@@ -82,3 +79,4 @@ async function getBillableTime() {
   console.log("Total Billable time: ", billableTime);
 }
 // getBillableTime().catch((err) => console.log("11111111111111111111111", err));
+main();
